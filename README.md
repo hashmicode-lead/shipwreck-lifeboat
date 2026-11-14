@@ -19,6 +19,17 @@ The terminal prints the student address, the host address and a host key.
 
 The host key is random on every start. To set your own: `HOST_KEY=yourkey node server.js`. To change the port: `PORT=8080 node server.js`. If you host it behind a reverse proxy (an online host such as Render or Railway), also set `TRUST_PROXY=1`.
 
+## Host it online (Render)
+
+Vercel won't work: it runs many short-lived copies of the server, and this game keeps its state in one server's memory. Render runs it as is.
+
+1. Sign in at [render.com](https://render.com) with GitHub and give it access to this repo.
+2. **New → Blueprint**, pick this repo, and click **Apply**. `render.yaml` sets everything up.
+3. When asked for `HOST_KEY`, type your host password.
+4. After about 2 minutes you get an address like `https://lifeboat-xxxx.onrender.com`. Students open it; the host opens `/host`.
+
+The free plan handles 100 players at once (a full test game used about 2% of one CPU core). It sleeps after 15 minutes without visitors and takes about a minute to wake, so open the address a few minutes before class. Restarting or redeploying clears the game in progress, so don't push changes during a class.
+
 ## Class list (optional)
 
 In the lobby, the host can upload a CSV or type the groups into the **Class list** card. Students then tap their team and choose their name from a dropdown; names already taken show as "joined". Either format works:
