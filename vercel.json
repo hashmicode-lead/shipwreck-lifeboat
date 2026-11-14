@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "",
+  "outputDirectory": "static",
+  "regions": ["bom1"],
+  "functions": {
+    "api/game.js": { "includeFiles": "public/index.html", "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/api/game?r=page" },
+    { "source": "/host", "destination": "/api/game?r=page" },
+    { "source": "/demo", "destination": "/api/game?r=page" },
+    { "source": "/api/:route(state|roster|join|rank|order|approve|host)", "destination": "/api/game?r=:route" }
+  ]
+}

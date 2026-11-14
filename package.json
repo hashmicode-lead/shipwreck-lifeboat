@@ -2,5 +2,9 @@
   "name": "lifeboat",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "start": "node server.js" }
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node -e \"process.env.HOST_KEY ??= '3693'; require('./server.js')\""
+  }
 }

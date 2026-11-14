@@ -39,12 +39,12 @@ body.wide .bar-in,body.wide .prog-wrap,body.wide main{max-width:1180px}
 .app{display:flex;flex-direction:column;line-height:1.1;min-width:0}
 .app b{font-size:15px;letter-spacing:-.01em}.app small{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lockup{display:flex;flex-direction:column;align-items:center;gap:6px;color:#1d5fae}
-.lead-lockup{width:min(300px,78vw);height:auto;display:block}
+.lead-lockup{width:min(170px,46vw);height:auto;display:block}
 .lockup span{font-size:13px;font-weight:600;letter-spacing:.16em;line-height:1.35;text-align:center}
 
 /* Progress: a stepper. Done = navy ✓, current = icon inside an orange ring that fills with the phase timer, future = grey. */
 .prog-wrap{padding-bottom:10px}
-.stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr)}
+.stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
 .stepper li{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
 .stepper li:not(:first-child)::before{content:"";position:absolute;top:16px;right:calc(50% + 23px);left:calc(-50% + 23px);height:2px;border-radius:1px;background:#0f2a431c;transition:background-color .4s var(--ease-out)}
 .stepper li.done::before,.stepper li.now::before{background:var(--pri)}
@@ -99,15 +99,12 @@ button:disabled{opacity:.38;cursor:default}
   .soft:hover,.warn:hover{background:#f6f9fb}
   .teams button:not([aria-pressed=true]):hover{box-shadow:inset 0 0 0 2px var(--pri),0 2px 0 #14466f14}
 }
-/* Captain vote: each name is a ballot; the orange bar under it grows with its votes */
-.votes{display:grid;gap:8px}
-.vote{display:grid;grid-template-columns:minmax(0,1fr) auto 2em;align-items:center;gap:8px;width:100%;text-align:left;background:#fff;color:var(--text);
-  border-radius:12px 12px 15px 15px;padding:12px 14px;position:relative;overflow:hidden;isolation:isolate;box-shadow:inset 0 0 0 1.5px var(--line),inset 0 -3px 0 #0f2a430d}
-.vote[aria-pressed=true]{background:var(--pri2);box-shadow:inset 0 0 0 2px var(--pri),inset 0 -3px 0 #14466f26}
-.vote .vname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vote small{color:var(--muted);font-weight:600}
-.vbar{position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--acc);transform:scaleX(var(--v));transform-origin:left;transition:transform .6s var(--ease-out);z-index:-1}
-.vcount{font-variant-numeric:tabular-nums;text-align:right;font-size:18px}
-.lead-tag{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:750;color:#b8402c}
+/* Round 2: your own Round 1 order (read-only) beside the shared team lifeboat */
+.water.mine{background:linear-gradient(180deg,#eef5fb,#dcebf7);border-color:#c9dcec}.water.mine::before{display:none}
+.chip.ro{cursor:default;touch-action:auto;border-left-color:#14466f40;box-shadow:none}.chip.ro .ring{width:22px;height:22px;font-size:11px}
+.approvals{margin:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}.approvals b{color:var(--text)}
+.cta.on,.cta.on:hover:not(:disabled){background:linear-gradient(180deg,#1d8a57,#157347)}
+.tablewrap{max-height:60vh;overflow:auto;-webkit-overflow-scrolling:touch}
 /* Press splash: a band of water sweeps across from the side you pressed */
 .cta,.soft,.warn,.teams button{position:relative;isolation:isolate;overflow:hidden}
 .splash{position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;animation:splash 1.1s cubic-bezier(.4,0,.2,1) forwards;
@@ -127,8 +124,18 @@ button:disabled{opacity:.38;cursor:default}
 }
 @keyframes driftx{to{background-position:40px 0}}
 :focus-visible{outline:3px solid #f4a03a;outline-offset:2px}
-input{font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;width:100%;background:#fff;color:var(--text)}
-input:focus{border-color:var(--pri);outline:none;box-shadow:0 0 0 4px #14466f22}
+input,select,textarea{font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;width:100%;background:#fff;color:var(--text)}
+select{appearance:none;-webkit-appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2314466f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 15px center/12px}
+select:disabled{color:var(--muted);opacity:.7}
+textarea{font-size:15px;line-height:1.45;resize:vertical;min-height:150px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.flag{display:inline-flex;align-items:center;gap:2px;padding:0 6px;border-radius:999px;background:var(--acc2);color:#8f2a19;font-size:12px;font-weight:800}
+.pill.flagged{box-shadow:0 0 0 2px #e8553d inset}
+.pill .x{min-height:0;padding:0 0 0 4px;background:none;color:inherit;opacity:.5;font-size:16px;line-height:1;border-radius:0}
+.pill .x:hover{opacity:1}
+.banner.changed{display:flex;gap:8px;align-items:center;animation:nudge .5s var(--ease-out)}
+@keyframes nudge{0%{transform:translateX(0)}30%{transform:translateX(-5px)}60%{transform:translateX(4px)}100%{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.banner.changed{animation:none}}
+input:focus,select:focus,textarea:focus{border-color:var(--pri);outline:none;box-shadow:0 0 0 4px #14466f22}
 label{font-size:14px;color:var(--muted);font-weight:650;display:block;margin:14px 0 6px}
 
 /* Signature: every seat number is a life ring */
@@ -211,6 +218,14 @@ label{font-size:14px;color:var(--muted);font-weight:650;display:block;margin:14p
   .hint{font-size:14px}
 }
 @keyframes swell{to{transform:translateX(calc(var(--w) * -1))}}
+/* Demo controls: a small floating bar */
+.demobar{white-space:nowrap;position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:6px;
+  background:#0f2a43eb;color:#fff;border-radius:999px;padding:4px 4px 4px 14px;font-size:12px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 8px 24px #0f2a4340}
+.demobar button{white-space:nowrap;min-height:32px;padding:3px 13px;border-radius:999px;background:#fff;color:var(--text);font-size:13px;letter-spacing:0;text-transform:none}
+.demobar button[hidden]{display:none}
+body.demo main{padding-bottom:calc(max(28px,env(safe-area-inset-bottom)) + 56px)}
+body.demo .sticky{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 54px)}
+@media (max-width:700px) and (min-height:560px){body.demo.fit main{height:calc(100dvh - var(--hdr,96px) - 60px);padding-bottom:4px}}
 .profiles{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:12px}
 .profiles li{display:flex;gap:12px;align-items:flex-start}.profiles .emoji{font-size:26px}
 .sheet .profiles p{text-align:left;margin:2px 0 0;font-size:15px}
@@ -283,12 +298,10 @@ tr.me td{background:var(--pri2)}
     <span class="app"><b>Lifeboat</b><small id="brand">Shipwreck game</small></span>
   </div>
   <span class="timer" id="timer" role="timer"></span></div>
-  <div class="prog-wrap"><ol class="stepper" id="prog" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">
-    <li><span class="node"><span class="ico" data-i="anchor"></span></span><span class="lbl">Captain</span></li>
+  <div class="prog-wrap"><ol class="stepper" id="prog" role="progressbar" aria-label="Game progress" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
     <li><span class="node"><span class="ico" data-i="ship"></span></span><span class="lbl">Story</span></li>
     <li><span class="node"><span class="ico" data-i="person"></span></span><span class="lbl">Solo</span></li>
     <li><span class="node"><span class="ico" data-i="chat"></span></span><span class="lbl">Discuss</span></li>
-    <li><span class="node"><span class="ico" data-i="decide"></span></span><span class="lbl">Decide</span></li>
     <li><span class="node"><span class="ico" data-i="flag"></span></span><span class="lbl">Results</span></li>
   </ol></div>
 </header>
@@ -336,13 +349,16 @@ const PEOPLE = {
   'Elderly Scientist': ['scientist', 'Seventy-two, and close to a cure for a deadly disease.'],
 };
 const ICON = c => ico(PEOPLE[c][0]);
-const STEPS = [['captain', 'Captain'], ['story', 'Story'], ['r1', 'Solo'], ['discuss', 'Discuss'], ['group', 'Decide'], ['results', 'Results']];
+const STEPS = [['story', 'Story'], ['r1', 'Solo'], ['discuss', 'Discuss'], ['results', 'Results']];
 
 /* ===== Helpers ===== */
 const $ = s => document.querySelector(s), view = $('#view');
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
-const api = (u, body, hdr) => fetch('/api/' + u, { method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
+const DEMO = location.pathname === '/demo';
+const demoMem = {};
+const store = DEMO ? { get: k => demoMem[k] ?? null, set: (k, v) => { if (v == null) delete demoMem[k]; else demoMem[k] = v; } } : { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} } };
+const api = (u, body, hdr) => DEMO ? Promise.resolve(demoApi(u, body || {})) : apiNet(u, body, hdr);
+const apiNet = (u, body, hdr) => fetch('/api/' + u, { method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
   headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...(hdr || {}) }, body: body ? JSON.stringify(body) : undefined }).then(r => r.json()).catch(() => ({ error: 'offline' }));
 const session = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch {} } };
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -387,7 +403,7 @@ function enter() {
 
 /* ===== Header: timer + phase steps ===== */
 let deadline = 0, startLocal = 0, curStep = -1;
-const PNAME = { lobby: 'Waiting for the host', captain: 'Choose your captain', story: 'The shipwreck', r1: 'Round 1 · Your ranking', discuss: 'Round 2 · Discussion', group: 'Team decision', results: 'Results' };
+const PNAME = { lobby: 'Waiting for the host', story: 'The shipwreck', r1: 'Round 1 · Your ranking', discuss: 'Round 2 · Team discussion', results: 'Results' };
 const stepEls = [...document.querySelectorAll('.stepper li')];
 function setClock(s) {
   deadline = s.endsAt ? Date.now() + (s.endsAt - s.now) : 0;
@@ -413,20 +429,22 @@ function paintSteps(phase) {
   const p = $('#prog'); p.setAttribute('aria-valuenow', curStep + 1); p.setAttribute('aria-valuetext', `${PNAME[phase] || 'Not started'}, step ${curStep + 1} of ${STEPS.length}`);
   paintProgress();
 }
-/* LEAD College of Management wordmark, redrawn as a vector from the official logo (measured geometry and colours) */
-const LEAD_BLUE = '#085dac';
-const leadSVG = (withText, cls) => `<svg class="${cls}" viewBox="0 ${withText ? '0 474 214' : '4 474 154'}" role="img" aria-label="LEAD College of Management">
-  <defs><clipPath id="leadA${withText ? 1 : 0}"><rect x="225" y="9" width="135" height="145.5"/></clipPath></defs>
-  <g fill="none" stroke="${LEAD_BLUE}" stroke-width="17.5">
-    <path d="M14.5 33.5 V132.5 A13 13 0 0 0 27.5 145.5 H98"/>
-    <path d="M204 17.5 H136 A13 13 0 0 0 123 30.5 V132 A13 13 0 0 0 136 145 H204"/>
-    <path d="M241 165 L291.3 -0.8 L345.5 165" stroke-linejoin="miter" stroke-miterlimit="10" clip-path="url(#leadA${withText ? 1 : 0})"/>
-    <path d="M376 17.5 H444.5 A13 13 0 0 1 457.5 30.5 V131.5 A13 13 0 0 1 444.5 144.5 H376"/>
+/* LEAD College (Autonomous) wordmark, redrawn as a vector from the official logo (measured geometry and colours) */
+const LEAD_BLUE = '#005c9f';
+const leadSVG = (withText, cls) => `<svg class="${cls}" viewBox="0 0 828 ${withText ? 492 : 274}" role="img" aria-label="LEAD College (Autonomous)">
+  <defs><clipPath id="leadA${withText ? 1 : 0}"><rect x="395" y="4" width="240" height="265.5"/></clipPath></defs>
+  <g fill="none" stroke="${LEAD_BLUE}" stroke-width="30">
+    <path d="M20.5 51 V229 A25 25 0 0 0 45.5 254 H169"/>
+    <path d="M358 20 H238.5 A25 25 0 0 0 213.5 45 V228 A25 25 0 0 0 238.5 253 H358"/>
+    <path d="M414.8 300 L513.6 -11.8 L613.6 300" stroke-linejoin="miter" stroke-miterlimit="10" clip-path="url(#leadA${withText ? 1 : 0})"/>
+    <path d="M664 20 H783 A25 25 0 0 1 808 45 V228 A25 25 0 0 1 783 253 H664"/>
   </g>
-  <circle cx="164.5" cy="81.5" r="12.2" fill="${LEAD_BLUE}"/>
-  <rect x="5.75" y="8.5" width="17.5" height="6.4" fill="#e00a83"/><rect x="5.75" y="14.9" width="17.5" height="6.4" fill="#06afe5"/>
-  <rect x="5.75" y="21.3" width="17.5" height="6.4" fill="#f4951f"/><rect x="5.75" y="27.7" width="17.5" height="6.3" fill="#8bc743"/>
-  ${withText ? `<text x="6" y="207" fill="${LEAD_BLUE}" font-family="Bahnschrift, DIN Alternate, Segoe UI, Roboto, Arial, sans-serif" font-size="30" font-weight="400" textLength="459" lengthAdjust="spacing">LEAD COLLEGE OF MANAGEMENT</text>` : ''}
+  <circle cx="287.5" cy="136.5" r="23" fill="${LEAD_BLUE}"/>
+  <rect x="5.5" y="4" width="30" height="11.8" fill="#e4087e"/><rect x="5.5" y="15.8" width="30" height="11.8" fill="#93c13e"/>
+  <rect x="5.5" y="27.6" width="30" height="11.8" fill="#1f9dd8"/><rect x="5.5" y="39.4" width="30" height="11.8" fill="#f19220"/>
+  ${withText ? `<g fill="${LEAD_BLUE}" font-family="Bahnschrift, DIN Alternate, Segoe UI, Roboto, Arial, sans-serif" font-weight="400">
+    <text x="14" y="389" font-size="122" textLength="789" lengthAdjust="spacingAndGlyphs">LEAD COLLEGE</text>
+    <text x="9" y="486" font-size="100" textLength="796" lengthAdjust="spacing">AUTONOMOUS</text></g>` : ''}
 </svg>`;
 const leadLockup = () => `<div class="lockup">${leadSVG(true, 'lead-lockup')}</div>`;
 const bar = $('.bar');
@@ -490,23 +508,42 @@ sheet.addEventListener('pointerup', endSheetDrag); sheet.addEventListener('point
 
 /* ================= STUDENT ================= */
 let id = store.get('lb_id'), st = null, sig = '', ranked = [], boardKey = '', chars = [], lastPhase = '', pickTeam = 0;
-let drag = null, settling = null;
+let drag = null, settling = null, seenV = 0;
 
+// Class list from the host (or null: students type their own name). Taken names show as "joined".
+let roster = null;
+const teamButtons = () => (roster ? roster.map(t => t.team) : Array.from({ length: 10 }, (_, i) => i + 1))
+  .map(n => `<button data-team="${n}" aria-pressed="${pickTeam === n}">${n}</button>`).join('');
+function nameField() {
+  if (!roster) return `<input id="nm" maxlength="20" autocomplete="off" enterkeyhint="done" placeholder="First name">`;
+  const t = roster.find(x => x.team === pickTeam);
+  if (!t) return `<select id="nm" disabled><option value="">Pick your team first</option></select>`;
+  return `<select id="nm"><option value="">Choose your name</option>${t.names.map(n => `<option value="${esc(n.name)}" ${n.taken ? 'disabled' : ''}>${esc(n.name)}${n.taken ? ' · joined' : ''}</option>`).join('')}</select>`;
+}
+function paintJoinFields() {
+  if (!$('#join')) return;
+  const keep = $('#nm') && $('#nm').value;
+  if (roster && !roster.some(t => t.team === pickTeam)) pickTeam = 0;
+  $('#teams').innerHTML = teamButtons(); $('#nmwrap').innerHTML = nameField();
+  if (keep) { $('#nm').value = keep; if ($('#nm').value !== keep) $('#nm').value = ''; }   // a name someone else just took is dropped
+  $('#tsub').textContent = roster ? 'Pick your team, then your name.' : 'Up to 10 per team.';
+}
+const loadRoster = () => api('roster').then(r => { if (r && !r.error) { roster = r.teams; paintJoinFields(); } });
 function joinView(msg) {
   paintSteps(''); deadline = 0; document.body.classList.remove('fit');
   view.innerHTML = `<div class="hero">${leadLockup()}<h1>Lifeboat</h1><p class="muted">The ship is sinking. Who gets rescued first?</p></div>
   <div class="card"><h2>Join your team</h2>
-    <label for="nm" style="margin-top:0">Your name</label><input id="nm" maxlength="20" autocomplete="off" enterkeyhint="done" placeholder="First name">
-    <label id="tlabel">Team</label><div class="teams" role="group" aria-labelledby="tlabel">${Array.from({ length: 10 }, (_, i) => `<button data-team="${i + 1}" aria-pressed="${pickTeam === i + 1}">${i + 1}</button>`).join('')}</div>
+    <label id="tlabel" style="margin-top:0">Team</label><div class="teams" id="teams" role="group" aria-labelledby="tlabel">${teamButtons()}</div>
+    <label for="nm">Your name</label><div id="nmwrap">${nameField()}</div>
     <p class="small" role="alert" style="color:var(--bad);min-height:1.4em;margin-top:10px">${esc(msg || '')}</p>
     <button class="w cta" id="join">Join the game</button></div>
-  <p class="muted small c">Up to 10 per team. Once everyone's in, each team votes for its captain.</p>`;
-  enter();
+  <p class="muted small c" id="tsub">${roster ? 'Pick your team, then your name.' : 'Up to 10 per team.'}</p>`;
+  enter(); loadRoster();
 }
 async function join() {
   const name = $('#nm').value.trim(), btn = $('#join');
-  if (!name) return joinView('Enter your name to join.');
   if (!pickTeam) { $('[role=alert]').textContent = 'Pick your team number.'; return; }
+  if (!name) { $('[role=alert]').textContent = roster ? 'Choose your name from the list.' : 'Enter your name to join.'; return; }
   btn.disabled = true; btn.textContent = 'Joining…';
   const r = await api('join', { name, team: pickTeam });
   if (r.error) { joinView(r.error === 'offline' ? 'Can\'t reach the game. Check the Wi-Fi.' : r.error); $('#nm').value = name; return; }
@@ -514,14 +551,16 @@ async function join() {
 }
 
 const teamCard = () => {
-  const t = st.team, done = t.members.filter(m => m.done).length;
-  return `<div class="card"><h2>Team ${t.team} · ${t.members.length} aboard${st.phase === 'r1' ? ` · ${done} locked in` : ''}</h2>${t.members.map(m =>
-    `<span class="pill ${m.done ? 'done' : ''} ${m.name === t.captain ? 'cap' : ''}">${m.done ? '✓' : ''} ${esc(m.name)}${m.name === t.captain ? ' ' + ico('anchor') : ''}</span>`).join('')}</div>`;
+  const t = st.team, discuss = st.phase === 'discuss', n = t.members.filter(m => discuss ? m.approved : m.done).length;
+  return `<div class="card"><h2>Team ${t.team} · ${t.members.length} aboard${st.phase === 'r1' ? ` · ${n} locked in` : discuss ? ` · ${n} approved` : ''}</h2>${t.members.map(m => {
+    const ok = discuss ? m.approved : m.done;
+    return `<span class="pill ${ok ? 'done' : ''}">${ok ? '✓' : ''} ${esc(m.name)}</span>`; }).join('')}</div>`;
 };
 const listCard = (title, l) => `<div class="card"><h2>${title}</h2><ol class="plain">${l.map((c, i) => `<li><span class="ring">${i + 1}</span><span class="emoji">${ICON(c)}</span>${c}</li>`).join('')}</ol></div>`;
+const teamMode = () => boardKey === 'discuss';   // Round 2: one shared team lifeboat, reorder only
 
 function chipHTML(c, from, cls) {
-  const tip = from === 'seat' ? `, seat ${ranked.indexOf(c) + 1}. Press to put back in the water. Up and down arrows reorder.` : '. Press to give the next seat, or drag onto a seat.';
+  const tip = from === 'seat' ? `, seat ${ranked.indexOf(c) + 1}. ${teamMode() ? '' : 'Press to put back in the water. '}Up and down arrows reorder.` : '. Press to give the next seat, or drag onto a seat.';
   return `<button class="chip ${cls || ''}" data-k="${c}" data-c="${c}" data-from="${from}" aria-label="${c}${tip}"><span class="emoji">${ICON(c)}</span><span class="nm">${c}</span></button>`;
 }
 // pv = drag preview { c, target: 'raft' | 'water' | null, idx, landing }
@@ -538,11 +577,16 @@ function boardHTML(pv) {
     if (c) return `<div class="seat"><span class="ring">${i + 1}</span>${chipHTML(c, 'seat', c === lifted ? lc : '')}</div>`;
     return `<div class="seat empty ${i === list.length ? 'next' : ''}"><span class="ring">${i + 1}</span><span>${i === list.length ? 'Next seat' : ''}</span></div>`;
   }).join('');
-  return `<div class="board">
-    <section class="water ${hot('water')}" id="water" aria-label="In the water"><h2>${ico('wave')} In the water</h2><div class="rows">${pool.length
-      ? pool.map((c, i) => chipHTML(c, 'water', c === lifted ? lc : '').replace('<button ', `<button style="--i:${i}" `)).join('')
-      : '<p class="empty-note">Everyone is aboard!</p>'}</div></section>
-    <section class="raft ${hot('raft')}" id="raft" aria-label="Lifeboat seats"><h2>Lifeboat</h2><div class="rows" id="seats">${seats}</div></section></div>`;
+  const mine = st.me.list || [];
+  const left = teamMode()
+    ? `<section class="water mine" aria-label="Your Round 1 order"><h2>${ico('person')} Your Round 1</h2><div class="rows">${mine.length
+        ? mine.map((c, i) => `<div class="chip ro"><span class="ring">${i + 1}</span><span class="nm">${c}</span></div>`).join('')
+        : '<p class="empty-note">You didn\'t finish Round 1.</p>'}</div></section>`
+    : `<section class="water ${hot('water')}" id="water" aria-label="In the water"><h2>${ico('wave')} In the water</h2><div class="rows">${pool.length
+        ? pool.map((c, i) => chipHTML(c, 'water', c === lifted ? lc : '').replace('<button ', `<button style="--i:${i}" `)).join('')
+        : '<p class="empty-note">Everyone is aboard!</p>'}</div></section>`;
+  return `<div class="board">${left}
+    <section class="raft ${hot('raft')}" id="raft" aria-label="${teamMode() ? 'Team lifeboat' : 'Lifeboat seats'}"><h2>${teamMode() ? 'Team lifeboat' : 'Lifeboat'}</h2><div class="rows" id="seats">${seats}</div></section></div>`;
 }
 const board = ep => `<p class="muted small hint">Drag onto a seat or tap to fill the next one. <b>Seat 1 is rescued first.</b> <button class="linkbtn" data-a="profiles">Who are they?</button></p>
   <div id="board">${boardHTML()}</div><p class="small c" id="err" role="alert" style="color:var(--bad)"></p><button class="w sticky cta" id="submit" data-ep="${ep}"></button>`;
@@ -562,13 +606,29 @@ function act(a, c) {
 }
 
 let suppressUntil = 0;
+// Round 2: share a rearranged order with the team right away.
+async function sendOrder() {
+  const r = await api('order', { id, list: ranked });
+  if (r.error && $('#err')) $('#err').textContent = r.error === 'offline' ? 'Couldn\'t send. Check the Wi-Fi.' : r.error;
+  sig = ''; poll();
+}
 view.addEventListener('click', async e => {
   const b = e.target.closest('button'); if (!b || IS_HOST) return;
-  if (b.dataset.team) { pickTeam = +b.dataset.team; view.querySelectorAll('[data-team]').forEach(x => x.setAttribute('aria-pressed', x === b)); buzz(5); return; }
+  if (b.dataset.team) {
+    pickTeam = +b.dataset.team; view.querySelectorAll('[data-team]').forEach(x => x.setAttribute('aria-pressed', x === b)); buzz(5);
+    if (roster) { $('#nmwrap').innerHTML = nameField(); loadRoster(); }   // refresh who has joined
+    return;
+  }
   if (b.id === 'join') return join();
-  if (b.dataset.vote) { view.querySelectorAll('[data-vote]').forEach(x => x.setAttribute('aria-pressed', x === b)); buzz(6); await api('vote', { id, pick: +b.dataset.vote }); sig = ''; return poll(); }
   if (b.dataset.a === 'profiles') return openProfiles();
-  if (b.classList.contains('chip')) { if (performance.now() < suppressUntil) return; return act(b.dataset.from === 'water' ? 'add' : 'rm', b.dataset.c); }
+  if (b.classList.contains('chip')) { if (performance.now() < suppressUntil || teamMode()) return; return act(b.dataset.from === 'water' ? 'add' : 'rm', b.dataset.c); }
+  if (b.id === 'approve') {
+    b.disabled = true;
+    const r = await api('approve', { id, v: st.team.v, on: !st.me.approved });
+    if (r.error) { $('#err').textContent = r.error === 'offline' ? 'Couldn\'t send. Check the Wi-Fi.' : r.error; b.disabled = false; }
+    else buzz(st.me.approved ? 5 : [10, 40, 14]);
+    sig = ''; return poll();
+  }
   if (b.id === 'submit') {
     b.disabled = true; b.textContent = 'Sending…';
     const r = await api(b.dataset.ep, { id, list: ranked });
@@ -583,6 +643,7 @@ view.addEventListener('keydown', e => {
   if (to < 0 || to >= ranked.length) return;
   e.preventDefault(); ranked = placeAt(ranked, c, to); paintBoard();   // keyboard: instant, no animation
   say(`${c}, seat ${to + 1}`); const n = view.querySelector(`.chip[data-c="${CSS.escape(c)}"]`); if (n) n.focus();
+  if (teamMode()) sendOrder();
 });
 
 /* Drag between the water and the seats: a lifted copy tracks the finger 1:1, seats make room as you hover,
@@ -644,6 +705,7 @@ function endDrag(cancel) {
     const landed = view.querySelector(`#seats .chip[data-c="${CSS.escape(d.c)}"]`);
     if (landed && moved) landed.parentElement.classList.add('landed');
     if (moved) say(ranked.includes(d.c) ? `${d.c}, seat ${ranked.indexOf(d.c) + 1}` : `${d.c} back in the water`);
+    if (moved && teamMode()) sendOrder();
     if (sig === 'stale') poll();
   };
   settling = { finish() { if (ax) ax.stop(); if (ay) ay.stop(); commit(); } };
@@ -693,27 +755,24 @@ function storyView() {
   }, t));
 }
 
-/* Results moment: count-up, gauge, staggered bars */
+/* Results moment: count-up marks, gauge, staggered bars */
 function resultsView() {
-  const s = st, me = s.me, t = s.team, r = s.result, mates = t.members.filter(m => m.total != null).sort((a, b) => a.total - b.total);
-  const C = 2 * Math.PI * 70, pct = r ? Math.round((1 - r.total / 50) * 100) : 0;
+  const s = st, me = s.me, t = s.team, r = s.result;
+  const C = 2 * Math.PI * 70, frac = r ? r.marks / r.max : 0;
   view.innerHTML = `<div><h1>Results</h1><p class="muted">Team ${t.team}</p></div>` + (r
-    ? `<div class="card c"><h2>Your difference score</h2>
+    ? `<div class="card c"><h2>Your marks</h2>
         <div class="gauge"><svg viewBox="0 0 170 170" aria-hidden="true"><circle cx="85" cy="85" r="70" stroke="#e6eef6"/><circle class="arc" id="arc" cx="85" cy="85" r="70" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg>
-        <div><div class="score" id="score">0</div><small>${pct}% in tune</small></div></div>
-        <p class="muted small">Sum of |your seat − team seat| for all 10 passengers.<br>0 = perfect match with your team · 50 = the opposite order.</p></div>
+        <div><div class="score" id="score">0</div><small>out of ${r.max}</small></div></div></div>
       <div class="card"><h2>Passenger by passenger · you → team</h2><div class="bars">${t.group.map((c, i) => {
         const mine = me.list.indexOf(c) + 1, d = r.diffs[chars.indexOf(c)];
         return `<div class="brow"><span class="n">${ICON(c)} ${c}<span class="seatsxy">seat ${mine} → ${i + 1}</span></span><div class="track"><div class="fill ${d ? '' : 'zero'}" style="--v:${d ? d / 9 : 1};--i:${i}"></div></div><b class="c">${d}</b></div>`;
       }).join('')}</div></div>`
-    : `<div class="card c muted">No score: ${!me.list ? 'you didn\'t finish Round 1.' : 'your team didn\'t submit a final order.'}</div>`) +
-    (t.group ? listCard(`Team ${t.team} final order`, t.group) : '') +
-    (mates.length ? `<div class="card"><h2>Closest to the team decision</h2><table><tr><th>#</th><th>Name</th><th class="r">Score</th></tr>${mates.map((m, i) => `<tr class="${m.name === me.name ? 'me' : ''}"><td>${i + 1}</td><td>${esc(m.name)}${m.name === t.captain ? ' ' + ico('anchor') : ''}</td><td class="r"><b>${m.total}</b></td></tr>`).join('')}</table></div>` : '');
+    : `<div class="card c muted">No marks: ${!me.list ? 'you didn\'t finish Round 1.' : 'your team has no final order.'}</div>`);
   enter();
   if (!r) return;
-  requestAnimationFrame(() => requestAnimationFrame(() => { const a = $('#arc'); if (a) a.style.strokeDashoffset = C * (1 - pct / 100); }));
+  requestAnimationFrame(() => requestAnimationFrame(() => { const a = $('#arc'); if (a) a.style.strokeDashoffset = C * (1 - frac); }));
   const el = $('#score'), t0 = performance.now(), dur = REDUCED ? 1 : 1100;
-  const tick = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4); if (!el.isConnected) return; el.textContent = Math.round(r.total * e); if (p < 1) requestAnimationFrame(tick); };
+  const tick = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4); if (!el.isConnected) return; el.textContent = Math.round(r.marks * e); if (p < 1) requestAnimationFrame(tick); };
   requestAnimationFrame(tick); buzz([12, 60, 12]);
 }
 
@@ -722,8 +781,12 @@ function render() {
   chars = s.chars; lastPhase = s.phase; paintSteps(s.phase);
   $('#brand').textContent = `Team ${t.team}`;
   if (s.phase !== 'story') storyTimers.forEach(clearTimeout);
-  const boardPhase = (s.phase === 'r1' && !me.list) || (s.phase === 'group' && me.captain && !t.group) ? s.phase : '';
+  const boardPhase = (s.phase === 'r1' && !me.list) || (s.phase === 'discuss' && t.order && !t.group) ? s.phase : '';
   if (boardPhase !== boardKey) { ranked = []; boardKey = boardPhase; closeSheet(); }
+  if (boardKey === 'discuss') ranked = t.order.slice();   // the shared team order is the source of truth
+  // A teammate changed the shared order: buzz and announce it once per change.
+  if (s.phase !== 'discuss') seenV = 0;
+  else if (t.v > seenV) { if (seenV && t.lastBy && t.lastBy !== me.name) { buzz([30, 60, 30]); say(`${t.lastBy} changed the team order`); } seenV = t.v; }
   document.body.classList.toggle('fit', !!boardPhase);   // phones: board fills exactly one screen
   const head = (title, sub) => `<div class="phead"><h1>${title}</h1>${sub ? `<p class="muted">${sub}</p>` : ''}</div>`;
 
@@ -731,27 +794,27 @@ function render() {
   if (s.phase === 'results') { if (phaseChanged) resultsView(); return; }
   if (s.phase === 'lobby') {
     view.innerHTML = head(`Welcome aboard, ${esc(me.name)}`, 'Waiting for the host to start the game.') +
-      `<div class="banner info">You're on <b>Team ${t.team}</b>. Once everyone's in, your team will vote for a captain.</div>` + teamCard() +
-      `<div class="card"><h2>How it works</h2><ol class="how"><li><b>Captain:</b> your team votes for who will enter the final order.</li><li><b>Solo:</b> rank the 10 passengers on your own, first rescued at the top.</li><li><b>Discuss:</b> talk as a team and agree on one order.</li><li><b>Decide:</b> your captain enters the team's order.</li><li><b>Results:</b> see how far your choices were from the team's.</li></ol></div>`;
-  } else if (s.phase === 'captain') {
-    const maxV = Math.max(1, ...t.members.map(m => m.votes)), voted = t.members.reduce((a, m) => a + m.votes, 0);
-    view.innerHTML = head('Choose your captain', 'The captain enters your team\x27s final order. Tap a name to vote; you can change it until time runs out.') +
-      `<div class="card"><h2>Team ${t.team} · ${voted} of ${t.members.length} voted</h2><div class="votes">${t.members.map((m, i) =>
-        `<button class="vote" data-vote="${i}" aria-pressed="${me.vote === i}"><span class="vname">${esc(m.name)}${m.name === me.name ? ' <small>(you)</small>' : ''}</span>${m.name === t.captain && m.votes ? `<span class="lead-tag">${ico('anchor')} Leading</span>` : '<span></span>'}<b class="vcount">${m.votes}</b><span class="vbar" style="--v:${m.votes / maxV}"></span></button>`).join('')}</div></div>
-      <p class="muted small c">Most votes wins. A tie goes to whoever joined first.</p>`;
+      `<div class="banner info">You're on <b>Team ${t.team}</b>.</div>` + teamCard() +
+      `<div class="card"><h2>How it works</h2><ol class="how"><li><b>Solo:</b> rank the 10 passengers on your own, first rescued at the top.</li><li><b>Discuss (15 min):</b> your whole team shares one lifeboat. Anyone can rearrange it.</li><li><b>Approve:</b> when everyone approves the same order, it locks in.</li><li><b>Results:</b> marks out of 90. The closer your Round 1 order is to the team's, the higher your marks.</li></ol></div>`;
   } else if (s.phase === 'r1') {
     view.innerHTML = head('Round 1: your choice', 'Decide alone. No talking yet.') + (me.list
       ? `<div class="banner">✓ Locked in. Waiting for your teammates.</div>` + listCard('Your order', me.list) + teamCard()
       : board('rank'));
   } else if (s.phase === 'discuss') {
-    view.innerHTML = head('Round 2: discuss', 'Talk it through and agree on one order.') +
-      `<div class="banner info">Captain <b>${esc(t.captain)}</b> ${ico('anchor')} will enter the team's order next.</div>` +
-      (me.list ? listCard('Your Round 1 order', me.list) : `<div class="card muted">You didn't finish Round 1, so you won't be scored. Join the discussion anyway!</div>`) + teamCard() +
-      `<button class="soft w" data-a="profiles">Who's on board?</button>`;
-  } else if (s.phase === 'group') {
-    view.innerHTML = head('Team decision', me.captain ? 'Enter the order your team agreed on.' : `Captain ${esc(t.captain)} is entering it.`) +
-      (t.group ? `<div class="banner">✓ Team order submitted. Results are coming.</div>` + listCard(`Team ${t.team} final order`, t.group)
-        : me.captain ? board('group') : `<div class="card c muted">${ico('clock')} Waiting for the captain…</div>` + (me.list ? listCard('Your Round 1 order', me.list) : ''));
+    if (t.group) {
+      view.innerHTML = head('Team order locked', 'Everyone approved. Results appear when the host ends the discussion.') +
+        `<div class="banner">✓ Your team agreed on this order.</div>` + listCard(`Team ${t.team} final order`, t.group) + teamCard();
+    } else {
+      const waiting = t.members.filter(m => !m.approved).map(m => esc(m.name));
+      const changedBy = t.lastBy && t.lastBy !== me.name && !me.approved ? t.lastBy : '';   // stays until you approve again
+      const last = !me.approved && t.approvals === t.members.length - 1;
+      view.innerHTML = head('Round 2: team discussion', 'Talk it through. Anyone can rearrange the team lifeboat.') +
+        (changedBy ? `<div class="banner warn changed" role="status">⚑ <span><b>${esc(changedBy)}</b> changed the team order. Check it, then approve again.</span></div>`
+          : `<p class="muted small hint">Drag to rearrange. Your team sees the same lifeboat, and any change clears all approvals. <button class="linkbtn" data-a="profiles">Who are they?</button></p>`) +
+        `<div id="board">${boardHTML()}</div><p class="small c" id="err" role="alert" style="color:var(--bad)"></p>
+        <p class="approvals small"><b>${t.approvals} of ${t.members.length} approved</b>${waiting.length ? ` · waiting for ${waiting.join(', ')}` : ''}</p>
+        <button class="w sticky cta ${me.approved ? 'on' : ''}" id="approve">${me.approved ? '✓ You approved · tap to undo' : last ? 'Approve and lock the order' : 'Approve this order'}</button>`;
+    }
   }
   paintSubmit();
   if (phaseChanged) enter();
@@ -771,9 +834,9 @@ async function poll() {
 
 /* ================= HOST ================= */
 store.set('lb_key', null);   // older versions kept the key permanently; clear it
-let key = session.get('lb_key') || '', hostSig = '', hostPhase = '';
-const NEXT = { lobby: 'Everyone’s in ▸ vote for captains', captain: 'Lock captains ▸ start story', story: 'Skip to Round 1 ▸', r1: 'End Round 1 ▸', discuss: 'End discussion ▸', group: 'Show results ▸' };
-const PH = { lobby: 'Lobby', captain: 'Captain vote', story: 'Shipwreck story', r1: 'Round 1 · solo', discuss: 'Round 2 · discussion', group: 'Team decision', results: 'Results' };
+let key = session.get('lb_key') || '', hostSig = '', hostPhase = '', hostData = null;
+const NEXT = { lobby: 'Start the game ▸', story: 'Skip to Round 1 ▸', r1: 'End Round 1 ▸ discussion', discuss: 'End discussion ▸ results' };
+const PH = { lobby: 'Lobby', story: 'Shipwreck story', r1: 'Round 1 · solo', discuss: 'Round 2 · team discussion', results: 'Results' };
 function hostLogin(msg) {
   view.innerHTML = `<div class="hero">${leadLockup()}<h1>Host dashboard</h1></div><div class="card"><label for="k" style="margin-top:0">Host key</label><input id="k" type="password" autocomplete="current-password">
     <p class="small" role="alert" style="color:var(--bad);min-height:1.4em;margin-top:8px">${esc(msg || '')}</p><button class="w cta" id="go">Open dashboard</button></div>`;
@@ -782,8 +845,48 @@ function hostLogin(msg) {
   $('#k').focus();
 }
 async function hostAct(action) {
-  if (action === 'reset' && !confirm('Reset the game? All players and answers will be removed.')) return;
+  if (action === 'reset' && !confirm('Reset the game? All players and marks will be removed.')) return;
   await api('host', { action }, { 'X-Host-Key': key }); hostPoll();
+}
+// ⚑ N: how many times this student changed the shared order (outlined in red if a change undid teammates' approvals).
+const flag = m => m.changes ? `<span class="flag" title="Changed the team order ${m.changes}×, ${m.undid} after teammates had approved">⚑ ${m.changes}</span>` : '';
+const everyone = s => s.teams.flatMap(t => t.members.map(m => ({ ...m, team: t.team }))).sort((a, b) => (b.marks ?? -1) - (a.marks ?? -1) || a.team - b.team || a.name.localeCompare(b.name));
+// Spreadsheet export. Cells that start with = + - @ are prefixed so a spreadsheet never runs them as formulas.
+function downloadCSV() {
+  if (!hostData) return;
+  const cell = v => { let x = String(v ?? ''); if (/^[=+\-@\t\r]/.test(x)) x = "'" + x; return '"' + x.replace(/"/g, '""') + '"'; };
+  const rows = [['Rank', 'Name', 'Team', 'Marks (out of 90)', 'Difference', 'Round 1 done', 'Order changes', 'Changes after approvals']]
+    .concat(everyone(hostData).map((m, i) => [m.marks != null ? i + 1 : '', m.name, m.team, m.marks ?? '', m.difference ?? '', m.done ? 'Yes' : 'No', m.changes || 0, m.undid || 0]));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + rows.map(r => r.map(cell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' }));
+  a.download = `lifeboat-marks-${new Date().toISOString().slice(0, 10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+// Class list card. Built once and moved back in after each redraw, so typing in it is never lost.
+let rosterEl = null, rDirty = false;
+const rosterText = R => R ? Object.keys(R).sort((a, b) => a - b).map(t => `Team ${t}\n${R[t].join('\n')}`).join('\n\n') : '';
+async function saveRoster(text) {
+  const r = await api('host', { action: 'roster', text }, { 'X-Host-Key': key });
+  $('#rerr').textContent = r.error === 'offline' ? 'Couldn\'t reach the server.' : r.error || '';
+  if (!r.error) { rDirty = false; $('#rok').textContent = text.trim() ? 'Saved ✓' : 'Cleared ✓'; setTimeout(() => { if ($('#rok')) $('#rok').textContent = ''; }, 2500); hostSig = ''; hostPoll(); }
+}
+function rosterCard() {
+  if (rosterEl) return rosterEl;
+  rosterEl = document.createElement('div'); rosterEl.className = 'card';
+  rosterEl.innerHTML = `<h2>Class list <span class="muted small" id="rsum"></span></h2>
+    <p class="muted small" style="margin-top:0">Upload a CSV or type the groups here. Students then tap their team and choose their name from a list. Use one row per student (<b>team, name</b>), or a <b>Team 1</b> line followed by its names. Leave it empty to let students type their own names.</p>
+    <textarea id="roster" rows="8" spellcheck="false" autocomplete="off" placeholder="Team 1&#10;Asha&#10;Ben&#10;&#10;Team 2&#10;Chitra&#10;…"></textarea>
+    <p class="small" id="rerr" role="alert" style="color:var(--bad);white-space:pre-line;margin:8px 0 0"></p>
+    <div class="row" style="align-items:center;margin-top:8px"><button class="soft" id="rup" style="flex:0 1 150px">Upload CSV</button><button class="cta" id="rsave" style="flex:1 1 160px">Save class list</button><button class="soft" id="rclear" style="flex:0 1 90px">Clear</button><span class="small" id="rok" style="color:var(--good);font-weight:700"></span></div>
+    <input type="file" id="rfile" accept=".csv,.txt,text/csv,text/plain" hidden>`;
+  const ta = rosterEl.querySelector('#roster'), file = rosterEl.querySelector('#rfile');
+  ta.oninput = () => { rDirty = true; };
+  rosterEl.querySelector('#rup').onclick = () => file.click();
+  file.onchange = () => { const f = file.files[0]; if (!f) return; const fr = new FileReader();
+    fr.onload = () => { ta.value = String(fr.result); rDirty = true; file.value = ''; saveRoster(ta.value); }; fr.readAsText(f); };
+  rosterEl.querySelector('#rsave').onclick = () => saveRoster(ta.value);
+  rosterEl.querySelector('#rclear').onclick = () => { if (confirm('Clear the class list? Students will type their own names.')) { ta.value = ''; saveRoster(''); } };
+  return rosterEl;
 }
 async function hostPoll() {
   if (!key) { if (!$('#k')) hostLogin(); return; }   // don't redraw the login form while someone is typing
@@ -791,20 +894,135 @@ async function hostPoll() {
   if (s.error === 'offline') return;
   if (s.error) { key = ''; session.set('lb_key', null); return hostLogin(s.error); }
   setClock(s); paintSteps(s.phase);
-  const k = JSON.stringify([s.phase, s.players, s.teams]); if (k === hostSig) return; hostSig = k;
-  const all = s.teams.flatMap(t => t.members), res = s.phase === 'results', changed = s.phase !== hostPhase; hostPhase = s.phase;
+  const k = JSON.stringify([s.phase, s.players, s.teams, s.roster]); if (k === hostSig) return; hostSig = k; hostData = s;
+  const ta = rosterEl && rosterEl.querySelector('#roster'), hadFocus = ta && document.activeElement === ta ? [ta.selectionStart, ta.selectionEnd] : null;
+  const all = s.teams.flatMap(t => t.members), res = s.phase === 'results', disc = s.phase === 'discuss', changed = s.phase !== hostPhase; hostPhase = s.phase;
+  const people = everyone(s);
   view.innerHTML = `<div class="row" style="align-items:center"><div style="flex:3 1 260px"><h1>${PH[s.phase]}</h1><p class="muted">Students join at <b>${location.host}</b></p></div>
       ${NEXT[s.phase] ? `<button class="cta" data-h="next" style="flex:1 1 180px">${NEXT[s.phase]}</button>` : ''}${s.endsAt ? '<button class="soft" data-h="more" style="flex:0 1 120px">+1 min</button>' : ''}<button class="warn" data-h="reset" style="flex:0 1 100px">Reset</button></div>
-    <div class="stats"><div class="card"><b>${s.players}</b><span class="muted small">players</span></div><div class="card"><b>${all.filter(m => m.done).length}</b><span class="muted small">Round 1 done</span></div><div class="card"><b>${s.teams.filter(t => t.group).length}/${s.teams.length}</b><span class="muted small">team orders</span></div></div>` +
-    (res ? `<div class="card"><h2>Teams by average difference · lower = more in tune</h2><table><tr><th>#</th><th>Team</th><th class="r">Avg</th></tr>${s.teams.filter(t => t.avg != null).sort((a, b) => a.avg - b.avg).map((t, i) => `<tr><td>${i + 1}</td><td>Team ${t.team}</td><td class="r"><b>${t.avg}</b></td></tr>`).join('') || '<tr><td colspan="3" class="muted">No scored teams.</td></tr>'}</table></div>` : '') +
-    `<div class="grid">${s.teams.map(t => `<div class="card"><h2>Team ${t.team} · ${t.members.length} players${t.group ? ' · <span style="color:var(--good)">order in ✓</span>' : ''}</h2>
-      ${res ? `<table>${t.members.slice().sort((a, b) => (a.total ?? 99) - (b.total ?? 99)).map(m => `<tr><td>${esc(m.name)}${m.name === t.captain ? ' ' + ico('anchor') : ''}</td><td class="r"><b>${m.total ?? '–'}</b></td></tr>`).join('')}</table>${t.group ? `<p class="small muted" style="margin-top:10px">${t.group.map((c, i) => `${i + 1}. ${c}`).join(' · ')}</p>` : ''}`
-      : t.members.map(m => `<span class="pill ${m.done ? 'done' : ''} ${m.name === t.captain ? 'cap' : ''}">${m.done ? '✓' : ''} ${esc(m.name)}${m.name === t.captain ? ' ' + ico('anchor') : ''}</span>`).join('')}</div>`).join('') || '<p class="muted">No teams yet. Share the join address above.</p>'}</div>`;
-  view.querySelectorAll('[data-h]').forEach(b => { b.onclick = () => hostAct(b.dataset.h); });
+    <div class="stats"><div class="card"><b>${s.players}</b><span class="muted small">players</span></div><div class="card"><b>${all.filter(m => m.done).length}</b><span class="muted small">Round 1 done</span></div><div class="card"><b>${s.teams.filter(t => t.group).length}/${s.teams.length}</b><span class="muted small">teams locked in</span></div></div>` +
+    (s.phase === 'lobby' ? '<div id="rslot"></div>' : '') +
+    (res ? `<div class="card"><div class="row" style="align-items:center;margin-bottom:8px"><h2 style="margin:0;flex:1 1 auto">Every student's marks · out of 90</h2><button class="soft" data-h="csv" style="flex:0 0 auto">Download CSV</button></div>
+      <div class="tablewrap"><table><tr><th>#</th><th>Name</th><th>Team</th><th class="r">Marks</th><th class="r">Diff</th><th class="r" title="Times this student changed the team order">⚑</th></tr>${people.map((m, i) =>
+        `<tr><td>${m.marks != null ? i + 1 : '–'}</td><td>${esc(m.name)}</td><td>${m.team}</td><td class="r"><b>${m.marks ?? '–'}</b></td><td class="r">${m.difference ?? (m.done ? '–' : 'no R1')}</td><td class="r">${flag(m) || '–'}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">No players.</td></tr>'}</table></div></div>
+      <div class="card"><h2>Teams by average marks</h2><table><tr><th>#</th><th>Team</th><th class="r">Avg / 90</th></tr>${s.teams.filter(t => t.avg != null).sort((a, b) => b.avg - a.avg).map((t, i) => `<tr><td>${i + 1}</td><td>Team ${t.team}</td><td class="r"><b>${t.avg}</b></td></tr>`).join('') || '<tr><td colspan="3" class="muted">No scored teams.</td></tr>'}</table></div>` : '') +
+    `<div class="grid">${s.teams.map(t => `<div class="card"><h2>Team ${t.team} · ${t.members.length} players${t.group ? ' · <span style="color:var(--good)">locked ✓</span>' : disc ? ` · ${t.approvals}/${t.members.length} approved` : ''}</h2>
+      ${t.members.map(m => { const ok = disc ? m.approved : m.done; return `<span class="pill ${ok ? 'done' : ''} ${m.undid ? 'flagged' : ''}">${ok ? '✓' : ''} ${esc(m.name)}${res && m.marks != null ? ` · ${m.marks}` : ''} ${flag(m)}<button class="x" data-kick="${t.team}" data-name="${esc(m.name)}" aria-label="Remove ${esc(m.name)}" title="Remove (they can join again)">×</button></span>`; }).join('')}
+      ${disc && t.lastBy && !t.group ? `<p class="small" style="margin:8px 0 0;color:#8f2a19">⚑ Last change by <b>${esc(t.lastBy)}</b></p>` : ''}
+      ${(t.group || (disc && t.order)) ? `<p class="small muted" style="margin-top:10px">${(t.group || t.order).map((c, i) => `${i + 1}. ${c}`).join(' · ')}</p>` : ''}</div>`).join('') || '<p class="muted">No teams yet. Share the join address above.</p>'}</div>`;
+  view.querySelectorAll('[data-h]').forEach(b => { b.onclick = () => b.dataset.h === 'csv' ? downloadCSV() : hostAct(b.dataset.h); });
+  view.querySelectorAll('[data-kick]').forEach(b => { b.onclick = async () => {
+    if (!confirm(`Remove ${b.dataset.name} from Team ${b.dataset.kick}? Their name is freed so they can join again, for example on another phone.`)) return;
+    const r = await api('host', { action: 'kick', team: +b.dataset.kick, name: b.dataset.name }, { 'X-Host-Key': key });
+    if (r.error) alert(r.error); hostSig = ''; hostPoll(); }; });
+  const slot = $('#rslot');
+  if (slot) {
+    slot.replaceWith(rosterCard());
+    const box = rosterEl.querySelector('#roster');
+    if (!rDirty && document.activeElement !== box) box.value = rosterText(s.roster);
+    if (hadFocus) { box.focus(); box.setSelectionRange(...hadFocus); }
+    const n = s.roster ? Object.values(s.roster).reduce((a, l) => a + l.length, 0) : 0;
+    $('#rsum').textContent = s.roster ? `· ${Object.keys(s.roster).length} teams, ${n} students, ${s.players} joined` : '· not set (students type their names)';
+  }
   if (changed) enter();
 }
 
+/* ================= DEMO (/demo) =================
+   The whole game simulated in this browser tab: four teammates, the same rules and timings as the server,
+   and a small bar to skip timers. Nothing is sent to the server. */
+const DEMO_CHARS = ['Doctor', 'Cook', 'Priest', 'Engineer', 'Teacher', 'Soldier', 'Farmer', 'Journalist', 'Child', 'Elderly Scientist'];
+const DEMO_FLOW = { lobby: ['story', 0], story: ['r1', 14], r1: ['discuss', 180], discuss: ['results', 900], results: [null, 0] };
+let D = null;
+const dShuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const dAll = () => [D.me, ...D.bots];
+const dClear = () => dAll().forEach(m => { m.approved = false; });
+function demoReset() {
+  if (D) D.timers.forEach(clearTimeout);
+  D = { phase: 'lobby', startedAt: 0, endsAt: 0, team: 1, me: null, order: null, v: 0, group: null, timers: [],
+    lastBy: null, bots: ['Arjun', 'Meera', 'Rahul', 'Sana'].map(name => ({ name, list: null, approved: false, changes: 0 })) };
+}
+function dLater(ms, f) { D.timers.push(setTimeout(() => { f(); sig = ''; poll(); }, ms)); }
+function dPhase(p) {
+  if (!p) return;
+  D.timers.forEach(clearTimeout); D.timers = [];
+  // Leaving Round 1 early: your seated passengers keep their places and the rest are filled in, so the demo can carry on.
+  if (D.phase === 'r1' && !D.me.list) D.me.list = ranked.length && boardKey === 'r1' ? ranked.concat(dShuffle(DEMO_CHARS.filter(c => !ranked.includes(c)))) : dShuffle(DEMO_CHARS);
+  if (p === 'r1') D.bots.forEach((b, i) => dLater(2500 + i * 2200, () => { if (D.phase === 'r1') b.list = dShuffle(DEMO_CHARS); }));
+  if (p === 'discuss') {
+    D.bots.forEach(b => { if (!b.list) b.list = dShuffle(DEMO_CHARS); });
+    const lists = dAll().map(m => m.list), mean = c => lists.reduce((s, l) => s + l.indexOf(c), 0) / lists.length;
+    D.order = DEMO_CHARS.slice().sort((a, b) => mean(a) - mean(b)); D.v = 1; D.group = null; D.lastBy = null; dClear();
+    dLater(6000, () => {   // a teammate rearranges the shared lifeboat, which clears approvals
+      if (D.phase !== 'discuss' || D.group) return;
+      const o = D.order.slice(); [o[2], o[3]] = [o[3], o[2]]; D.order = o; D.v++; dClear(); D.lastBy = D.bots[1].name; D.bots[1].changes++;
+    });
+  }
+  if (p === 'results' && !D.group) D.group = (D.order || DEMO_CHARS).slice();
+  D.phase = p; D.startedAt = Date.now();
+  const d = DEMO_FLOW[p][1]; D.endsAt = d ? D.startedAt + d * 1000 : 0;
+}
+function dState() {
+  while (D.endsAt && Date.now() >= D.endsAt) dPhase(DEMO_FLOW[D.phase][0]);
+  if (!D.me) return { error: 'unknown' };
+  const res = D.phase === 'results', diffs = l => DEMO_CHARS.map(c => Math.abs(l.indexOf(c) - D.group.indexOf(c)));
+  const diffOf = l => l && D.group ? diffs(l).reduce((a, b) => a + b, 0) : null;
+  const members = dAll().map(m => ({ name: m.name, done: !!m.list, approved: m.approved,
+    marks: res && m.list ? 90 - diffOf(m.list) : undefined, difference: res ? diffOf(m.list) : undefined }));
+  const scored = members.filter(m => m.marks != null);
+  return { phase: D.phase, endsAt: D.endsAt, startedAt: D.startedAt, now: Date.now(), chars: DEMO_CHARS,
+    me: { name: D.me.name, team: D.team, list: D.me.list, approved: D.me.approved },
+    team: { team: D.team, members, order: D.order, v: D.v, lastBy: D.lastBy, approvals: dAll().filter(m => m.approved).length, group: D.group,
+      avg: res && scored.length ? Math.round(scored.reduce((a, m) => a + m.marks, 0) / scored.length * 10) / 10 : null },
+    result: res && D.me.list ? { diffs: diffs(D.me.list), difference: diffOf(D.me.list), marks: 90 - diffOf(D.me.list), max: 90 } : null };
+}
+function demoApi(u, b) {
+  if (u.startsWith('state')) return dState();
+  if (u === 'roster') return { teams: null };
+  const valid = l => Array.isArray(l) && l.length === 10 && new Set(l).size === 10 && DEMO_CHARS.every(c => l.includes(c));
+  if (u === 'join') {
+    const name = String(b.name || '').trim().slice(0, 20);
+    if (!name) return { error: 'Enter your name.' };
+    if (D.bots.some(x => x.name.toLowerCase() === name.toLowerCase())) return { error: 'A teammate already uses that name. Add an initial.' };
+    D.me = { name, list: null, approved: false, changes: 0 }; D.team = +b.team || 1; return { id: 'demo' };
+  }
+  if (u === 'rank') { if (D.phase !== 'r1' || D.me.list || !valid(b.list)) return { error: 'Not accepted now.' }; D.me.list = b.list.slice(); return { ok: true }; }
+  if (u === 'order') {
+    if (D.phase !== 'discuss' || D.group) return { error: 'The team order is locked.' };
+    if (!valid(b.list)) return { error: 'Keep all 10 passengers in the lifeboat.' };
+    if (b.list.join() !== D.order.join()) { D.order = b.list.slice(); D.v++; dClear(); D.lastBy = D.me.name; D.me.changes++; }
+    return { ok: true };
+  }
+  if (u === 'approve') {
+    if (D.phase !== 'discuss' || D.group) return { error: 'The team order is locked.' };
+    if (b.v !== D.v) return { error: 'The order just changed. Check it again before approving.' };
+    D.me.approved = b.on !== false;
+    if (D.me.approved) {   // teammates follow your lead, one by one, as long as nobody changes the order
+      const v = D.v;
+      D.bots.forEach((bot, i) => dLater(1000 + i * 900, () => {
+        if (D.v !== v || D.phase !== 'discuss' || D.group || !D.me.approved) return;
+        bot.approved = true; if (dAll().every(m => m.approved)) D.group = D.order.slice();
+      }));
+    }
+    return { ok: true };
+  }
+  return { error: 'Not available in the demo.' };
+}
+const DEMO_SKIP = { lobby: 'Start ▸', story: 'Skip ▸', r1: 'Skip ▸', discuss: 'Skip ▸' };
+function demoBar() {
+  const b = $('#dSkip'); if (!b) return;
+  const label = DEMO_SKIP[D.phase];
+  b.hidden = !label || !D.me; b.textContent = label || ''; b.setAttribute('aria-label', D.phase === 'lobby' ? 'Start the demo game' : 'Skip the rest of this phase');
+}
+function startDemo() {
+  demoReset(); document.body.classList.add('demo');
+  document.body.insertAdjacentHTML('beforeend', `<div class="demobar" role="group" aria-label="Demo controls"><span>Demo</span><button id="dSkip" hidden></button><button id="dRestart">Restart</button></div>`);
+  $('#dSkip').onclick = () => { if (drag || settling || !D.me) return; dPhase(DEMO_FLOW[D.phase][0]); sig = ''; poll(); };
+  $('#dRestart').onclick = () => { demoReset(); id = null; st = null; sig = ''; lastPhase = ''; boardKey = ''; ranked = []; closeSheet(); joinView(); demoBar(); };
+  poll(); setInterval(() => { poll(); demoBar(); }, 400);
+}
+
 if (IS_HOST) { document.body.classList.add('wide'); $('#brand').textContent = 'Host dashboard'; hostPoll(); setInterval(hostPoll, 2000); }
+else if (DEMO) startDemo();
 else { poll(); setInterval(poll, 1500); }
 </script>
 </body>
