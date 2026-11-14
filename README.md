@@ -17,18 +17,28 @@ The terminal prints the student address, the host address and a host key.
 - **Students** open the printed `http://<this-pc-ip>:3000` on the same Wi‑Fi, enter a name and pick a team.
 - **Host** opens `http://localhost:3000/host` and enters the host key.
 
-The host key is random on every start. To set your own: `HOST_KEY=yourkey node server.js`. To change the port: `PORT=8080 node server.js`. If you host it behind a reverse proxy (an online host such as Render or Railway), also set `TRUST_PROXY=1`.
+The host key is random on every start. To set your own: `HOST_KEY=yourkey node server.js`. To change the port: `PORT=8080 node server.js`. If you run it behind a reverse proxy, also set `TRUST_PROXY=1`.
 
-## Host it online (Render)
+## Host it online (Vercel + Supabase)
 
-Vercel won't work: it runs many short-lived copies of the server, and this game keeps its state in one server's memory. Render runs it as is.
+The page and API run on Vercel; the game is stored in Supabase, so it works however many copies of the API Vercel starts.
 
-1. Sign in at [render.com](https://render.com) with GitHub and give it access to this repo.
-2. **New → Blueprint**, pick this repo, and click **Apply**. `render.yaml` sets everything up.
-3. When asked for `HOST_KEY`, type your host password.
-4. After about 2 minutes you get an address like `https://lifeboat-xxxx.onrender.com`. Students open it; the host opens `/host`.
+**1. Supabase (database), once**
+1. Open your project at [supabase.com/dashboard](https://supabase.com/dashboard). Mumbai (`ap-south-1`) is the closest region for India.
+2. **SQL Editor → New query**, paste all of `supabase/schema.sql`, click **Run**. It should say "Success. No rows returned".
+3. **Project Settings → API Keys**: copy the **secret** key (`sb_secret_…`; on older projects, the `service_role` key). Keep it private: never put it in the page or in GitHub.
 
-The free plan handles 100 players at once (a full test game used about 2% of one CPU core). It sleeps after 15 minutes without visitors and takes about a minute to wake, so open the address a few minutes before class. Restarting or redeploying clears the game in progress, so don't push changes during a class.
+**2. Vercel (website)**
+1. At [vercel.com/new](https://vercel.com/new), import this GitHub repo. Leave the framework as **Other** and the build settings empty.
+2. Before clicking **Deploy**, add three **Environment Variables**:
+   - `SUPABASE_URL`: `https://<project-ref>.supabase.co`
+   - `SUPABASE_SECRET_KEY`: the secret key from step 1.3
+   - `HOST_KEY`: your host password (use 8+ characters)
+3. Deploy. Students open `https://<your-project>.vercel.app`; the host opens `/host`.
+
+If the page says "Setup needed", a variable is missing: add it under **Settings → Environment Variables**, then **Deployments → Redeploy**.
+
+Redeploying doesn't touch a game in progress, because the game lives in Supabase. Free plans: one class game (100 students, ~20 minutes) is about 85,000 requests, so Vercel's free 1 million requests a month covers roughly 10 games. A Supabase free project pauses after a week with no use; open the dashboard and click **Restore** if it does.
 
 ## Class list (optional)
 
@@ -58,7 +68,11 @@ Timed phases advance on their own. The host can skip ahead, add a minute, or res
 
 ## Files
 
-- `server.js`: game server and scoring (Node's built-in modules only)
-- `public/index.html`: student and host pages
+- `public/index.html`: student, host and demo pages
+- `lib/handler.js`: web server: page, API routes, security checks, rate limits
+- `lib/game.js`: game rules, class-list parsing, and the in-memory game store
+- `lib/supabase.js` + `supabase/schema.sql`: the Supabase game store (each action is one database function)
+- `server.js`: run it on your own computer (in memory; set `SUPABASE_URL` and `SUPABASE_SECRET_KEY` to use Supabase instead)
+- `api/game.js` + `vercel.json`: the Vercel deployment
 
-Game state is kept in memory, so restarting the server clears it. Traffic is plain HTTP on the local network.
+With `node server.js` and no Supabase settings, the game is kept in memory, so restarting clears it.
