@@ -14,7 +14,7 @@
   --ease-out:cubic-bezier(.23,1,.32,1);--ease-sheet:cubic-bezier(.32,.72,0,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overscroll-behavior-y:none}
+body{margin:0;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);font:17px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overscroll-behavior-y:none}
 h1{font-size:26px;line-height:1.12;letter-spacing:-.02em;margin:0}
 h2{font-size:13px;letter-spacing:.02em;margin:0 0 10px;color:var(--muted);font-weight:650;text-transform:uppercase}
 p{margin:0}.muted{color:var(--muted)}.small{font-size:14px}.c{text-align:center}
@@ -127,8 +127,10 @@ button:disabled{opacity:.38;cursor:default}
 input,select,textarea{font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;width:100%;background:#fff;color:var(--text)}
 select{appearance:none;-webkit-appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2314466f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 15px center/12px}
 select:disabled{color:var(--muted);opacity:.7}
-textarea{font-size:15px;line-height:1.45;resize:vertical;min-height:150px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+textarea{font-size:16px;line-height:1.45;resize:vertical;min-height:150px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .flag{display:inline-flex;align-items:center;gap:2px;padding:0 6px;border-radius:999px;background:var(--acc2);color:#8f2a19;font-size:12px;font-weight:800}
+.chip,.seat{-webkit-touch-callout:none}   /* iPhone: a long press starts a drag, not the copy/share callout */
+.linkbtn{padding-top:8px;padding-bottom:8px;margin-top:-8px;margin-bottom:-8px}   /* bigger tap area, same look */
 .pill.flagged{box-shadow:0 0 0 2px #e8553d inset}
 .pill .x{min-height:0;padding:0 0 0 4px;background:none;color:inherit;opacity:.5;font-size:16px;line-height:1;border-radius:0}
 .pill .x:hover{opacity:1}
@@ -194,7 +196,7 @@ label{font-size:14px;color:var(--muted);font-weight:650;display:block;margin:14p
 
 /* Phones: the ranking board fits one screen, so dragging never fights page scroll */
 @media (max-width:700px) and (min-height:560px){
-  body.fit main{height:calc(100dvh - var(--hdr,96px));gap:8px;padding-top:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  body.fit main{height:calc(100vh - var(--hdr,96px));height:calc(100dvh - var(--hdr,96px));gap:8px;padding-top:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
   body.fit .phead{display:none}
   body.fit #board{flex:1;min-height:0;display:flex}
   body.fit .board{flex:1;min-height:0}
@@ -217,6 +219,19 @@ label{font-size:14px;color:var(--muted);font-weight:650;display:block;margin:14p
   .chip{font-size:13.5px;gap:5px;padding-left:5px;padding-right:5px;border-left-width:4px}.emoji{font-size:16px}
   .hint{font-size:14px}
 }
+/* Short phones (iPhone SE, small Androids): give the ranking board the height so every row stays easy to drag */
+@media (max-width:700px) and (max-height:760px){
+  body.fit .lbl{display:none}              /* step icons and ✓ still show progress */
+  body.fit .prog-wrap{padding-bottom:6px}
+  body.fit main{gap:6px;padding-top:6px}
+  body.fit .raft{padding-top:14px}
+  body.fit .water{padding-top:6px}
+  body.fit .board h2{margin-bottom:4px}
+  body.fit .rows{gap:4px}
+  body.fit .hint{font-size:13px;line-height:1.35}
+  .banner.changed{font-size:14px;line-height:1.3;padding:7px 12px}
+  .hero{padding:10px 16px 8px}.hero h1{font-size:28px;margin-top:6px}.hero .lead-lockup{width:min(118px,34vw)}
+}
 @keyframes swell{to{transform:translateX(calc(var(--w) * -1))}}
 /* Demo controls: a small floating bar */
 .demobar{white-space:nowrap;position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:6px;
@@ -225,7 +240,7 @@ label{font-size:14px;color:var(--muted);font-weight:650;display:block;margin:14p
 .demobar button[hidden]{display:none}
 body.demo main{padding-bottom:calc(max(28px,env(safe-area-inset-bottom)) + 56px)}
 body.demo .sticky{bottom:calc(max(14px,env(safe-area-inset-bottom)) + 54px)}
-@media (max-width:700px) and (min-height:560px){body.demo.fit main{height:calc(100dvh - var(--hdr,96px) - 60px);padding-bottom:4px}}
+@media (max-width:700px) and (min-height:560px){body.demo.fit main{height:calc(100vh - var(--hdr,96px) - 60px);height:calc(100dvh - var(--hdr,96px) - 60px);padding-bottom:4px}}
 .profiles{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:12px}
 .profiles li{display:flex;gap:12px;align-items:flex-start}.profiles .emoji{font-size:26px}
 .sheet .profiles p{text-align:left;margin:2px 0 0;font-size:15px}
@@ -514,6 +529,8 @@ let drag = null, settling = null, seenV = 0;
 let roster = null;
 const teamButtons = () => (roster ? roster.map(t => t.team) : Array.from({ length: 10 }, (_, i) => i + 1))
   .map(n => `<button data-team="${n}" aria-pressed="${pickTeam === n}">${n}</button>`).join('');
+// Up to 6 teams fit on one row; more wrap in rows of 5.
+const teamCols = () => { const n = roster ? roster.length : 10; return `repeat(${n <= 6 ? n : 5},1fr)`; };
 function nameField() {
   if (!roster) return `<input id="nm" maxlength="20" autocomplete="off" enterkeyhint="done" placeholder="First name">`;
   const t = roster.find(x => x.team === pickTeam);
@@ -524,7 +541,7 @@ function paintJoinFields() {
   if (!$('#join')) return;
   const keep = $('#nm') && $('#nm').value;
   if (roster && !roster.some(t => t.team === pickTeam)) pickTeam = 0;
-  $('#teams').innerHTML = teamButtons(); $('#nmwrap').innerHTML = nameField();
+  $('#teams').innerHTML = teamButtons(); $('#teams').style.gridTemplateColumns = teamCols(); $('#nmwrap').innerHTML = nameField();
   if (keep) { $('#nm').value = keep; if ($('#nm').value !== keep) $('#nm').value = ''; }   // a name someone else just took is dropped
   $('#tsub').textContent = roster ? 'Pick your team, then your name.' : 'Up to 10 per team.';
 }
@@ -533,7 +550,7 @@ function joinView(msg) {
   paintSteps(''); deadline = 0; document.body.classList.remove('fit');
   view.innerHTML = `<div class="hero">${leadLockup()}<h1>Lifeboat</h1><p class="muted">The ship is sinking. Who gets rescued first?</p></div>
   <div class="card"><h2>Join your team</h2>
-    <label id="tlabel" style="margin-top:0">Team</label><div class="teams" id="teams" role="group" aria-labelledby="tlabel">${teamButtons()}</div>
+    <label id="tlabel" style="margin-top:0">Team</label><div class="teams" id="teams" role="group" aria-labelledby="tlabel" style="grid-template-columns:${teamCols()}">${teamButtons()}</div>
     <label for="nm">Your name</label><div id="nmwrap">${nameField()}</div>
     <p class="small" role="alert" style="color:var(--bad);min-height:1.4em;margin-top:10px">${esc(msg || '')}</p>
     <button class="w cta" id="join">Join the game</button></div>
@@ -809,7 +826,7 @@ function render() {
       const changedBy = t.lastBy && t.lastBy !== me.name && !me.approved ? t.lastBy : '';   // stays until you approve again
       const last = !me.approved && t.approvals === t.members.length - 1;
       view.innerHTML = head('Round 2: team discussion', 'Talk it through. Anyone can rearrange the team lifeboat.') +
-        (changedBy ? `<div class="banner warn changed" role="status">⚑ <span><b>${esc(changedBy)}</b> changed the team order. Check it, then approve again.</span></div>`
+        (changedBy ? `<div class="banner warn changed" role="status">⚑ <span><b>${esc(changedBy)}</b> changed the order. Check it and approve again.</span></div>`
           : `<p class="muted small hint">Drag to rearrange. Your team sees the same lifeboat, and any change clears all approvals. <button class="linkbtn" data-a="profiles">Who are they?</button></p>`) +
         `<div id="board">${boardHTML()}</div><p class="small c" id="err" role="alert" style="color:var(--bad)"></p>
         <p class="approvals small"><b>${t.approvals} of ${t.members.length} approved</b>${waiting.length ? ` · waiting for ${waiting.join(', ')}` : ''}</p>
